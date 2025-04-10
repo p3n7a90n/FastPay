@@ -1,0 +1,172 @@
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastPay</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfffd !important;
+            color: #282c3f !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: .3px;
+            text-decoration: none;
+        }
+
+        a, h3, h5 {
+            color: #2d3436;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border:  2px solid #f7f2f2 !important;
+            border-radius: 8px;
+            box-shadow: 4px 4px 12px rgba(0,0,0,.05);
+            margin-bottom: 20px;
+            
+        }
+
+        .card-title, .card-text {
+            color: #333;
+        }
+
+        .btn-primary, .addbtn {
+            background-color: #0984e3 !important;
+            border-color: #0984e3 !important;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white !important;
+        }
+
+        .btn-primary:hover, .addbtn:hover {
+            background-color: #74b9ff !important;
+            border-color: #74b9ff !important;
+        }
+
+        .addBalance {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #ced6e0;
+            border-radius: 8px;
+            padding: 9px;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            max-width: 100%;
+            background-color: white;
+            color: #282c3f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .view-orders {
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: .3px;
+            color: #282c3f;
+            border-bottom: none;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container header">
+        <h1><a href="/">FastPay</a></h1>
+        <a href="/viewOrders" class="view-orders">View Orders</a>
+    </div>
+    <br><br>
+    <div class="container">
+        <h5>Wallet Balance: ₹<%=(walletBalance / 100).toFixed(2)%></h5>
+        <form action="/addBalance" method="post" enctype="application/x-www-form-urlencoded">
+            <input class="addBalance" type="text" name="amount" placeholder="Enter amount" required="">
+            <input type="submit" class="addbtn" value="Add">
+        </form>
+    </div>
+
+    <div class="container section-title">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <h3>Buy Clothes</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center" style="margin-left: 100px">
+                    <h3>Book Movie Tickets</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div id="catalog">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="/white-polo.png" class="card-img-top" alt="White Polo T-Shirt">
+                        <div class="card-body">
+                            <h5 class="card-title">White Polo T-Shirt</h5>
+                            <p class="card-text">₹1300.00</p>
+                            <form action="/onlineShopping" method="POST" enctype="application/x-www-form-urlencoded">
+                                <input type="hidden" name="itemName" value="white-polo">
+                                <input type="hidden" name="price" value="1300">
+                                <button class="addbtn">Buy</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="/black-polo.png" class="card-img-top" alt="Black Polo T-Shirt" style="height: 20%;">
+                        <div class="card-body">
+                            <h5 class="card-title">Black Polo T-Shirt</h5>
+                            <p class="card-text">₹1500.00</p>
+                            <form action="/onlineShopping" method="POST" enctype="application/x-www-form-urlencoded">
+                                <input type="hidden" name="itemName" value="black-polo">
+                                <input type="hidden" name="price" value="1500">
+                                <button class="addbtn">Buy</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 130px">
+                    <div class="card">
+                        <img src="/The_Dark_Nigh_Rises.jpg" class="card-img-top" alt="Movie Ticket" style="width: 320px; height: 330px;">
+                        <div class="card-body">
+                            <h5 class="card-title">The Dark Knight Rises</h5>
+                            <p class="card-text">₹300.00</p>
+                            <form action="/bookMovieTicket" method="GET">
+                                <input type="hidden" name="movieName" value="The-Dark-Night-Rises">
+                                <button class="addbtn">Book</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body></html>

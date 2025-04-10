@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastPay</title>
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+      body {
+          background-color: #fdfffd !important;
+          color: #282c3f !important;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          letter-spacing: .3px;
+          text-decoration: none;
+      }
+
+      a, h3, h5 {
+          color: #2d3436;
+      }
+
+        .card {
+            background-color: #ffffff;
+            border:  2px solid #f7f2f2 !important;
+            border-radius: 8px;
+            box-shadow: 4px 4px 12px rgba(0,0,0,.05);
+            margin-bottom: 20px;
+            
+        }
+
+      .card-title, .card-text {
+          color: #333;
+      }
+
+      .btn-primary, .addbtn {
+          background-color: #0984e3 !important;
+          border-color: #0984e3 !important;
+          padding: 8px 20px;
+          border-radius: 4px;
+          font-weight: bold;
+          color: white !important;
+      }
+
+      .btn-primary:hover, .addbtn:hover {
+          background-color: #74b9ff !important;
+          border-color: #74b9ff !important;
+      }
+
+      .addBalance {
+          background-color: #ffffff;
+          color: #333;
+          border: 1px solid #ced6e0;
+          border-radius: 8px;
+          padding: 9px;
+          margin-right: 10px;
+      }
+
+      .section-title {
+          margin-top: 50px;
+          margin-bottom: 20px;
+      }
+
+      .header {
+          max-width: 100%;
+          background-color: white;
+          color: #282c3f;
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          text-transform: uppercase;
+      }
+
+      .header h1 {
+          margin: 0;
+      }
+
+      .view-orders {
+          text-align: center;
+          text-decoration: none;
+          font-size: 14px;
+          letter-spacing: .3px;
+          color: #282c3f;
+          border-bottom: none;
+          font-weight: 700;
+          text-transform: uppercase;
+      }
+
+  </style>
+</head>
+<body>
+  <div class="container header">
+    <h1><a href="/">FastPay</a></h1>
+  </div>
+    <center>
+    <div class="card" style="width: 25%; margin-top: 10%;">
+        <div class="card-body">
+          <h3 class="card-title">Login</h3>
+            <br>
+          <form class="form-signin" action="/login" method="POST">
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+            <br>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <br>
+            <button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+            <br>
+            <% if (typeof msg !== 'undefined'){%>
+              <p style="color:tomato">ERROR: <%=msg%></p>
+            <%}%>
+            Don't have a account? <a href="/register">Register</a>
+            <p class="mt-5 mb-3 text-muted">&copy; FastPay Inc.</p>
+          </form>
+        </div>
+      </div>
+    </center>
+</body>
+</html>

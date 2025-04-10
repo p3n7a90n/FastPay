@@ -1,0 +1,146 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastPay</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfffd !important;
+            color: #282c3f !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: .3px;
+            text-decoration: none;
+        }
+
+        a, h3, h5 {
+            color: #2d3436;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border:  2px solid #ffffff !important;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.05);
+            margin-bottom: 20px;
+            
+        }
+
+        .card-title, .card-text {
+            color: #333;
+        }
+
+        .btn-primary, .addbtn {
+            background-color: #0984e3 !important;
+            border-color: #0984e3 !important;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white !important;
+        }
+
+        .btn-primary:hover, .addbtn:hover {
+            background-color: #74b9ff !important;
+            border-color: #74b9ff !important;
+        }
+
+        .addBalance {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #ced6e0;
+            border-radius: 8px;
+            padding: 9px;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            max-width: 100%;
+            background-color: white;
+            color: #282c3f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .view-orders {
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: .3px;
+            color: #282c3f;
+            border-bottom: none;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container header">
+        <h1><a href="/">FastPay</a></h1>
+        <a href="/viewOrders" class="view-orders">View Orders</a>
+    </div>
+    <br><br>
+    <div class="container">
+        <h3>View Orders</h3>
+        <br><br>
+        <h5>Total Orders: <%=userOrders.length%></h5>
+        <div class="container mt-5">
+            <div id="catalog">
+                <div class="row" id="items-container">
+                    <!-- Items will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+        <script>
+            const data = <%-JSON.stringify(userOrders)%>;
+            const itemImages = {
+                "white-polo": "/white-polo.png",
+                "black-polo": "/black-polo.png"
+            };
+ 
+            const aggregatedItems = data.reduce((acc, item) => {
+                if (!acc[item.itemName]) {
+                    acc[item.itemName] = { ...item, quantity: 1 };
+                } else {
+                    acc[item.itemName].quantity += 1;
+                }
+                return acc;
+            }, {});
+
+            // Get the container to insert items
+            const itemsContainer = document.getElementById('items-container');
+
+            // Create HTML for each aggregated item and insert into the container
+            for (const itemName in aggregatedItems) {
+                const item = aggregatedItems[itemName];
+                const itemHtml = `
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="${itemImages[itemName]}" class="card-img-top" alt="${itemName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${itemName.replace('-', ' ')}</h5>
+                                <p class="card-text">Quantity: ${item.quantity}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                itemsContainer.innerHTML += itemHtml;
+            }
+        </script>
+                </div>
+</body></html>
