@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastPay</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfffd !important;
+            color: #282c3f !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: .3px;
+            text-decoration: none;
+        }
+  
+        a, h3, h5 {
+            color: #2d3436;
+        }
+  
+          .card {
+              background-color: #ffffff;
+              border:  2px solid #f7f2f2 !important;
+              border-radius: 8px;
+              box-shadow: 4px 4px 12px rgba(0,0,0,.05);
+              margin-bottom: 20px;
+              
+          }
+  
+        .card-title, .card-text {
+            color: #333;
+        }
+  
+        .btn-primary, .addbtn {
+            background-color: #0984e3 !important;
+            border-color: #0984e3 !important;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white !important;
+        }
+  
+        .btn-primary:hover, .addbtn:hover {
+            background-color: #74b9ff !important;
+            border-color: #74b9ff !important;
+        }
+  
+        .addBalance {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #ced6e0;
+            border-radius: 8px;
+            padding: 9px;
+            margin-right: 10px;
+        }
+  
+        .section-title {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+  
+        .header {
+            max-width: 100%;
+            background-color: white;
+            color: #282c3f;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+        }
+  
+        .header h1 {
+            margin: 0;
+        }
+  
+        .view-orders {
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: .3px;
+            color: #282c3f;
+            border-bottom: none;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .paymsg {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+        }
+
+        .order-info p {
+            margin-bottom: 8px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #f1f2f6;
+            font-size: 15px;
+        }
+
+        .order-info-label {
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .order-info-value {
+            color: #636e72;
+            text-align: right;
+            max-width: 60%;
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container header">
+        <h1><a href="/">FastPay</a></h1>
+    </div>
+    <center>
+        <div id="checkout">
+            <h2 style="font-weight: bold; margin-top: 7%;">Payment Status</h2>
+            <br>
+            <div class="card paymsg container col-lg-4">
+                <div id="message"></div>
+            </div>
+        </div>
+    </center>
+
+    <script>
+        const status = new URLSearchParams(window.location.search).get('redirect_status');
+        const orderId = new URLSearchParams(window.location.search).get('orderId');
+        const message = document.querySelector('#message')
+
+        switch (status) {
+            case 'succeeded':
+                fetchOrderDetails(orderId)
+            break;
+            case 'processing':
+            message.innerText = "Payment processing. We'll update you when payment is received.";
+            break;
+
+            case 'requires_payment_method':
+            message.innerText = 'Payment failed. Please try another payment method.';
+            break;
+
+            default:
+            message.innerText = 'Something went wrong.';
+            break;
+        }
+    
+        function fetchOrderDetails(orderId) {
+            console.log(orderId)
+            fetch(`/foodOrderDetails?orderId=${orderId}`)
+                .then(response => response.json())
+                .then((data) => {
+                    const message = document.querySelector('#message');
+                    console.log(data)
+                    message.innerHTML = `
+                            <div class="p-4">
+                                <h4 class="text-center mb-4">🎉 Order Confirmed</h4>
+                                <div class="order-info">
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Amount</span>
+                                        <span class="order-info-value">₹${(data.amount / 100).toFixed(2)}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Name</span>
+                                        <span class="order-info-value">${data.name}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Order ID</span>
+                                        <span class="order-info-value">${data.orderId}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Payment ID</span>
+                                        <span class="order-info-value">${data.paymentId}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Item</span>
+                                        <span class="order-info-value">${data.orderItem}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Status</span>
+                                        <span class="order-info-value">${data.orderStatus}</span>
+                                    </div>
+                                    <div class="order-info-row">
+                                        <span class="order-info-label">Address</span>
+                                        <span class="order-info-value" style="margin-top: 4px;">
+                                            ${data.addressLine1 || ''} ${data.addressLine2 || ''}<br>
+                                            ${data.city || ''}, ${data.state || ''}<br>
+                                            ${data.postalCode || ''}, ${data.country || ''}
+                                        </span>
+                                    </div>
+                                </div>
+                                <br>
+                                <p class="text-center">Thank you for ordering with <b>FastPay</b>!</p>
+                                <div class="text-center">
+                                    <button class='addbtn mt-3' onclick="location.href='/'">Return to Dashboard</button>
+                                </div>
+                            </div>
+                        `;
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const message = document.querySelector('#message');
+                    message.innerText = "Error fetching order details.";
+                });
+        }
+    
+    </script>
+    
+</body>
+
+</html>

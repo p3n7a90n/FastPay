@@ -25,6 +25,12 @@ Expiry: Any Future Date
 CVV: Any three digit Number
 ```
 
+**4. Add host**
+
+```
+echo '127.0.0.1 fastpay.com' > /etc/hosts
+```
+
 ## Setup Stripe Webhook listener
 ```
 npm install --save stripe
@@ -40,7 +46,3 @@ For more cards refer to: https://docs.stripe.com/testing?testing-method=card-num
 ```
 node server.js
 ```
-
-### Email
-
-https://www.wpoven.com/tools/free-smtp-server-for-testing

@@ -33,6 +33,12 @@ router.get('/ticketBookingStatus', authenticateToken, payment_controller.ticketB
 
 router.post('/booking_confirmation', authenticateToken, payment_controller.sendTicketBookingConfirmation)
 
+router.get('/orderfood', authenticateToken, payment_controller.orderFood)
+
+router.get('/foodOrderStatus', authenticateToken, payment_controller.onlineFoodOrderStatus)
+
+router.get('/foodOrderDetails', authenticateToken, payment_controller.foodOrderDetails)
+
 module.exports = {
   router
 }

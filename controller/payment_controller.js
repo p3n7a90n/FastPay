@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env['STRIPE_SECRET_KEY']);
-const {Users, Orders, MovieTickets} = require('../models/db')
+const {Users, Orders, MovieTickets, FoodOrders} = require('../models/db')
 const nodemailer = require('nodemailer');
 const STRIPE_PUBLISHABLE_KEY = process.env['STRIPE_PUBLISHABLE_KEY']
 
@@ -28,7 +28,6 @@ const addBalance =  async (req, res) => {
   res.render('checkout', {client_secret: orderIntent.client_secret, total: amount * 100, STRIPE_PUBLISHABLE_KEY});
 }
 
-// webhook controller to handle the payment status requests from stripe
 const webhook = async (req, res) =>{
   const event = req.body
   switch (event.type) {
@@ -42,6 +41,24 @@ const webhook = async (req, res) =>{
       if (req.body.data.object.metadata.type == 'onlineShoping'){
         await Orders.create({username: req.body.data.object.metadata.customer, itemName: req.body.data.object.metadata.itemName})
       }
+      if (req.body.data.object.metadata.type == 'orderFood'){
+        const shipping = req.body.data.object.shipping
+        console.log(JSON.stringify(shipping))
+        await FoodOrders.update({
+          paymentId: req.body.data.object.id,
+          amount: req.body.data.object.amount,
+          name: req.body.data.object.shipping.name,
+          addressLine1: shipping.address.line1,
+          addressLine2: shipping.address.line2,
+          city: shipping.address.city,
+          state: shipping.address.state,
+          country: shipping.address.country,
+          postalCode: shipping.address.postal_code,
+          orderStatus: "Confirmed"
+        }, {
+          where: { orderId: req.body.data.object.metadata.orderId }
+        });      
+      } 
       break;
     default:
       console.log('');
@@ -78,7 +95,6 @@ const onlineShopping =  async (req, res) => {
           enabled: true,
       }
   });
-  const product = req.body.itemName 
   res.render('checkout', {client_secret: orderIntent.client_secret, total:  price * 100, STRIPE_PUBLISHABLE_KEY});
 }
 
@@ -175,11 +191,54 @@ const transporter = nodemailer.createTransport({
   host: process.env['SMTP_SERVER'],
   port: process.env['SMTP_PORT'],
   auth: 'None'
-  // {
-  //     user: process.env['SMTP_USER'],
-  //     pass: process.env['SMTP_PASS']
-  // }
 });
+
+const foodMenuePrice = {burger: 22000}
+
+const orderFood = async (req,res)=>{
+  const orderItem = req.query.item
+  if (!orderItem) return res.status(400).json({ error: 'Missing orderItem' });
+
+  const newOrder = await FoodOrders.create({
+    orderStatus: "Payment Pending",
+    orderItem: orderItem,
+    username: req.user.username
+  });
+
+  const orderIntent = await stripe.paymentIntents.create({
+    amount: foodMenuePrice[orderItem],
+    currency: 'INR',
+    metadata: {
+      orderItem: orderItem,
+      customer: req.user.username,
+      type: 'orderFood',
+      orderId: newOrder.orderId
+    },
+    description: 'Online Food Order',
+    automatic_payment_methods: {
+        enabled: true,
+    }
+  });
+  
+  res.render('orderFood',{client_secret: orderIntent.client_secret, total:foodMenuePrice[orderItem], orderItem, STRIPE_PUBLISHABLE_KEY, orderId: newOrder.orderId});
+}
+
+const onlineFoodOrderStatus = async (req, res)=>{
+ res.render('foodOrderStatus', {STRIPE_PUBLISHABLE_KEY} )
+}
+
+const foodOrderDetails = async (req, res)=>{
+    const orderId = req.query.orderId
+    if (!orderId) return res.status(400).json({ error: 'Missing orderId' })
+    try {
+      const order = await FoodOrders.findOne({ where: { orderId } });
+      if (!order) return res.status(404).json({ error: 'Order not found' })
+      res.json(order)
+    } catch (err) {
+      console.error('Error fetching order:', err)
+      res.status(500).json({ error: 'Internal server error' })
+    }
+}
 
 module.exports = {
     onlineShopping: onlineShopping,
@@ -188,5 +247,8 @@ module.exports = {
     addBalance: addBalance,
     bookMovieTicket: bookMovieTicket,
     ticketBookingStatus: ticketBookingStatus,
-    sendTicketBookingConfirmation: sendTicketBookingConfirmation
+    sendTicketBookingConfirmation: sendTicketBookingConfirmation,
+    orderFood: orderFood,
+    onlineFoodOrderStatus: onlineFoodOrderStatus,
+    foodOrderDetails: foodOrderDetails
 }

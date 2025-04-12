@@ -4,7 +4,7 @@ const md5 = require('md5');
 
 function generateAccessToken(username) {
     const payload = { 'username': username };
-    return jwt.sign(payload, process.env.JWT_SECRET);
+    return jwt.sign(payload, process.env['JWT_SECRET']);
 }
 
 function authenticateToken(req, res, next) {

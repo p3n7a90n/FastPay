@@ -56,7 +56,7 @@
 
         .section-title {
             margin-top: 50px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .header {
@@ -88,6 +88,7 @@
             text-transform: uppercase;
         }
 
+
     </style>
 </head>
 <body>
@@ -104,68 +105,91 @@
         </form>
     </div>
 
-    <div class="container section-title">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card text-center">
-                    <h3>Buy Clothes</h3>
-                </div>
+<!-- Section Buttons (Clothes, Movies, Food) -->
+<div class="container section-title">
+    <div class="row text-center">
+        <div class="col-md-6">
+            <div class="card">
+                <h3>Buy Clothes</h3>
             </div>
-            <div class="col-md-4">
-                <div class="card text-center" style="margin-left: 100px">
-                    <h3>Book Movie Tickets</h3>
-                </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <h3>Book Movie Tickets</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <h3>Order Food</h3>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container mt-5">
-        <div id="catalog">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card">
-                        <img src="/white-polo.png" class="card-img-top" alt="White Polo T-Shirt">
-                        <div class="card-body">
-                            <h5 class="card-title">White Polo T-Shirt</h5>
-                            <p class="card-text">₹1300.00</p>
-                            <form action="/onlineShopping" method="POST" enctype="application/x-www-form-urlencoded">
-                                <input type="hidden" name="itemName" value="white-polo">
-                                <input type="hidden" name="price" value="1300">
-                                <button class="addbtn">Buy</button>
-                            </form>
-                        </div>
+<!-- Product/Service Catalog -->
+<div class="container">
+    <div id="catalog">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-80">
+                    <img src="/white-polo.png" class="card-img-top" alt="White Polo T-Shirt" style="height: 350px;">
+                    <div class="card-body">
+                        <h5 class="card-title">White Polo T-Shirt</h5>
+                        <p class="card-text">₹1300.00</p>
+                        <form action="/onlineShopping" method="POST">
+                            <input type="hidden" name="itemName" value="white-polo">
+                            <input type="hidden" name="price" value="1300">
+                            <button class="addbtn">Buy</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card">
-                        <img src="/black-polo.png" class="card-img-top" alt="Black Polo T-Shirt" style="height: 20%;">
-                        <div class="card-body">
-                            <h5 class="card-title">Black Polo T-Shirt</h5>
-                            <p class="card-text">₹1500.00</p>
-                            <form action="/onlineShopping" method="POST" enctype="application/x-www-form-urlencoded">
-                                <input type="hidden" name="itemName" value="black-polo">
-                                <input type="hidden" name="price" value="1500">
-                                <button class="addbtn">Buy</button>
-                            </form>
-                        </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-80">
+                    <img src="/black-polo.png" class="card-img-top" alt="Black Polo T-Shirt" style="height: 350px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Black Polo T-Shirt</h5>
+                        <p class="card-text">₹1500.00</p>
+                        <form action="/onlineShopping" method="POST">
+                            <input type="hidden" name="itemName" value="black-polo">
+                            <input type="hidden" name="price" value="1500">
+                            <button class="addbtn">Buy</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-3" style="margin-left: 130px">
-                    <div class="card">
-                        <img src="/The_Dark_Nigh_Rises.jpg" class="card-img-top" alt="Movie Ticket" style="width: 320px; height: 330px;">
-                        <div class="card-body">
-                            <h5 class="card-title">The Dark Knight Rises</h5>
-                            <p class="card-text">₹300.00</p>
-                            <form action="/bookMovieTicket" method="GET">
-                                <input type="hidden" name="movieName" value="The-Dark-Night-Rises">
-                                <button class="addbtn">Book</button>
-                            </form>
-                        </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-80">
+                    <img src="/The_Dark_Nigh_Rises.jpg" class="card-img-top" alt="Movie Ticket" style="height: 350px;">
+                    <div class="card-body">
+                        <h5 class="card-title">The Dark Knight Rises</h5>
+                        <p class="card-text">₹300.00</p>
+                        <form action="/bookMovieTicket" method="GET">
+                            <input type="hidden" name="movieName" value="The-Dark-Night-Rises">
+                            <button class="addbtn">Book</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-80">
+                    <img src="/burger.png" class="card-img-top" alt="Burger" style="height: 350px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Burger</h5>
+                        <p class="card-text">₹220.00</p>
+                        <form action="/orderfood" method="GET">
+                            <input type="hidden" name="item" value="burger">
+                            <button class="addbtn">Order</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
 
 
 
