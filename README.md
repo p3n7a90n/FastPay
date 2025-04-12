@@ -1,6 +1,6 @@
 # FastPay
 
-FastPay is a deliberately vulnerable payment gateway integration simulation app. It simulates a real-world checkout system using Stripe for payment processing — with intentional flaws for you to discover and exploit.
+FastPay is a deliberately vulnerable payment gateway integration simulation app. It mimics a real-world checkout system using Stripe for payment processing — with intentional flaws for you to discover and exploit.
 
 ### 🎯 Purpose
 
